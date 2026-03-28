@@ -22,7 +22,7 @@
     "lucide-react": "^0.575.0",
     "mic": "^2.1.2",
     "motion": "^12.38.0",
-    "next": "15.2.4",
+    "next": "16.2.1",
     "next-themes": "^0.4.6",
     "node-record-lpcm16": "^1.0.1",
     "radix-ui": "^1.4.3",
