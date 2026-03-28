@@ -2,7 +2,7 @@
 
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { SpeechIcon, HomeIcon, UserIcon, Waves } from "lucide-react";
+import { SpeechIcon, HomeIcon, UserIcon, Waves, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
@@ -12,7 +12,7 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-lg border-b border-border py-3">
       <div className="container mx-auto flex items-center justify-between">
         {/* LOGO */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 ml-3 md:ml-0">
           <div className="p-1 bg-primary/10 rounded">
             <Waves className="w-4 h-4 text-primary" />
           </div>
@@ -22,9 +22,10 @@ const Navbar = () => {
         </Link>
 
         {/* NAV LINKS */}
-        <nav className="flex items-center gap-5">
+        <nav className="flex mr-3 md:mr-0">
           {isSignedIn ? (
             <>
+            <div className="hidden md:flex items-center gap-5">
               <Link
                 href="/"
                 className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
@@ -56,9 +57,13 @@ const Navbar = () => {
                 <Link href="/conversation">Get Started</Link>
               </Button>
               <UserButton />
+            </div>
+            <div className="md:hidden">
+              <Menu size={20} />
+            </div>
             </>
           ) : (
-            <>
+            <div className="flex items-center gap-5">
               <SignInButton>
                 <Button
                   variant={"outline"}
@@ -73,7 +78,7 @@ const Navbar = () => {
                   Sign Up
                 </Button>
               </SignUpButton>
-            </>
+            </div>
           )}
         </nav>
       </div>
