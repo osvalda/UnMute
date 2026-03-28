@@ -5,6 +5,14 @@ import Link from "next/link";
 import { SpeechIcon, HomeIcon, UserIcon, Waves, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const Navbar = () => {
   const { isSignedIn } = useUser();
@@ -25,42 +33,87 @@ const Navbar = () => {
         <nav className="flex mr-3 md:mr-0">
           {isSignedIn ? (
             <>
-            <div className="hidden md:flex items-center gap-5">
-              <Link
-                href="/"
-                className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
-              >
-                <HomeIcon size={16} />
-                <span>Home</span>
-              </Link>
+              <div className="hidden md:flex items-center gap-5">
+                <Link
+                  href="/"
+                  className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
+                >
+                  <HomeIcon size={16} />
+                  <span>Home</span>
+                </Link>
 
-              <Link
-                href="/conversation"
-                className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
-              >
-                <SpeechIcon size={16} />
-                <span>Learn</span>
-              </Link>
+                <Link
+                  href="/conversation"
+                  className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
+                >
+                  <SpeechIcon size={16} />
+                  <span>Learn</span>
+                </Link>
 
-              <Link
-                href="/profile"
-                className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
-              >
-                <UserIcon size={16} />
-                <span>Profile</span>
-              </Link>
-              <Button
-                asChild
-                variant="outline"
-                className="ml-2 border-primary/50 text-primary hover:text-white hover:bg-primary/10"
-              >
-                <Link href="/conversation">Get Started</Link>
-              </Button>
-              <UserButton />
-            </div>
-            <div className="md:hidden">
-              <Menu size={20} />
-            </div>
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
+                >
+                  <UserIcon size={16} />
+                  <span>Profile</span>
+                </Link>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="ml-2 border-primary/50 text-primary hover:text-white hover:bg-primary/10"
+                >
+                  <Link href="/conversation">Get Started</Link>
+                </Button>
+                <UserButton />
+              </div>
+              <div className="flex md:hidden gap-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost"><Menu size={20} /></Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <Link
+                          href="/"
+                          className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
+                        >
+                          <HomeIcon size={16} />
+                          <span>Home</span>
+                        </Link></DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link
+                          href="/conversation"
+                          className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
+                        >
+                          <SpeechIcon size={16} />
+                          <span>Learn</span>
+                        </Link></DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link
+                          href="/profile"
+                          className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors"
+                        >
+                          <UserIcon size={16} />
+                          <span>Profile</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <Button
+                          variant="outline"
+                          className="border-primary/50 text-primary hover:text-white hover:bg-primary/10"
+                        >
+                          <Link href="/conversation">Get Started</Link>
+                        </Button>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <UserButton />
+              </div>
             </>
           ) : (
             <div className="flex items-center gap-5">
