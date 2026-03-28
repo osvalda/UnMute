@@ -8,7 +8,6 @@ import {
     gracefulShutdown
 } from "@/lib/gemini";
 import { playAudio } from "@/lib/audioUtils";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useTheme } from 'next-themes';
 import { AgentAudioVisualizerAura } from '@/components/agent-audio-visualizer-aura';
@@ -39,7 +38,7 @@ const ConversationModul = () => {
 
     useEffect(() => {
         const fullName = user?.firstName
-            ? `${user.firstName} ${user.lastName || ""}`.trim()
+            ? `${user.firstName}`.trim()
             : "There";
 
         const genAiCallback: LiveCallbacks = {
@@ -159,16 +158,14 @@ const ConversationModul = () => {
                 </div>
 
                 <div className="flex justify-center gap-6 mb-8">
-
                     <AgentAudioVisualizerAura
                         size="sm"
-                                color="#1FD5F9"
-                                colorShift={0.1}
-                                state={state}
-                                themeMode={systemTheme}
-                                className="aspect-square size-auto md:max-w-lg"
+                        color="#1FD5F9"
+                        colorShift={0.1}
+                        state={state}
+                        themeMode={systemTheme}
+                        className="aspect-square size-auto md:max-w-lg"
                     />
-
                 </div>
 
                 {messages.length > 0 && (
