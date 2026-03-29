@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Modality, Session, LiveCallbacks } from "@google/genai";
 import { listenUser } from "@/lib/audioUtils";
 
@@ -10,9 +9,12 @@ const genAI = new GoogleGenAI({
 export async function startLiveSession(name: string, callback: LiveCallbacks): Promise<Array<Session | MediaStream | ScriptProcessorNode> | string> {
   try {
     const session: Session = await genAI.live.connect({
-      model: "gemini-2.5-flash-native-audio-latest",
+      model: process.env.NEXT_PUBLIC_GEMINI_MODEL!,
       config: {
         responseModalities: [Modality.AUDIO],
+        temperature: 0.2,
+        topP: 0.1,
+        seed: 42,
         systemInstruction: `Please greet me as ${name} in audio immediately and do not wait the user to start the conversation! You are a helpful language learning assistant who is expecting an english word to help pronanuce.
         Help the user if he or she does not pronaunce the word correctly, repeat the word again and listen to answer. You can also give a hint to the user if he or she is struggling.
         You can also ask the user to spell the word if it is not clear. You have a british accent.

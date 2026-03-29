@@ -2,8 +2,6 @@
 
 import dynamic from 'next/dynamic'
 
-// import ConversationModul from "@/components/conversation/ConversationModul";
-
 const ConversationModul = dynamic(() => import('@/components/conversation/ConversationModul'), {
   ssr: false
 })

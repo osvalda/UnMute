@@ -16,7 +16,7 @@ const HomePage = () => {
                   <span className="text-foreground">Enhance Your</span>
                 </div>
                 <div>
-                  <span className="text-primary">English Knowledge</span>
+                  <span className="text-primary">English Pronunciation</span>
                 </div>
                 <div className="pt-2">
                   <span className="text-foreground">With Advanced</span>

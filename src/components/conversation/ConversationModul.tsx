@@ -14,9 +14,10 @@ import { AgentAudioVisualizerAura } from '@/components/agent-audio-visualizer-au
 import { AgentState } from "@livekit/components-react/hooks";
 
 const TIMEOUT: number = 240000;
+let callTimeoutHandle: NodeJS.Timeout | undefined;
+let counterTimeoutHandle: NodeJS.Timeout | undefined;
 
 const ConversationModul = () => {
-
     const [callActive, setCallActive] = useState(false);
     const [connecting, setConnecting] = useState(false);
     const [messages, setMessages] = useState<{ content: string; role: string }[]>(
@@ -30,7 +31,7 @@ const ConversationModul = () => {
 
     useEffect(() => {
         if (seconds > 0) {
-            setTimeout(() => setSeconds(seconds - 1), 1000);
+            counterTimeoutHandle = setTimeout(() => setSeconds(seconds - 1), 1000);
         } else {
             setSeconds(0);
         }
@@ -70,7 +71,7 @@ const ConversationModul = () => {
             },
         };
 
-        async function fetchData() {
+        async function setAudio() {
             const [session, stream, processor] = await startLiveSession(fullName, genAiCallback);
             setAiSession(session as Session);
             setMediaStream(stream as MediaStream);
@@ -78,7 +79,7 @@ const ConversationModul = () => {
         }
 
         if (callActive) {
-            fetchData();
+            setAudio();
         } else {
             gracefulShutdown(aiSession, mediaStream!, scriptProcessorNode!);
         }
@@ -104,6 +105,11 @@ const ConversationModul = () => {
         setCallActive(false);
         setConnecting(false);
         setState("connecting");
+        if (callTimeoutHandle) {
+            console.log("Clearing timeout");
+            clearTimeout(counterTimeoutHandle);
+            clearTimeout(callTimeoutHandle);
+        }
     };
 
     const handleError = (error: Error) => {
@@ -123,15 +129,13 @@ const ConversationModul = () => {
     const toggleCall = async () => {
         if (callActive) {
             setCallActive(false);
-            handleCallStart();
-            handleError(new Error("Call ended"));
             handleCallEnd();
         } else {
             try {
                 setConnecting(true);
                 setMessages([]);
 
-                setTimeout(async () => { setCallActive(false); }, TIMEOUT);
+                callTimeoutHandle = setTimeout(async () => { setCallActive(false); }, TIMEOUT);
                 setSeconds(Math.floor(TIMEOUT / 1000));
 
                 setConnecting(false);
@@ -148,24 +152,12 @@ const ConversationModul = () => {
             <div className="container mx-auto px-4 h-full max-w-5xl">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold font-mono">
-                        <span>Create Your </span>
-                        <span className="text-primary">Learning Schedule</span>
+                        <span>Say the word you want to </span>
+                        <span className="text-primary">practice</span>
                     </h1>
                     <p className="text-muted-foreground mt-2">
-                        Have a voice conversation with our AI assistant to create your
-                        personalized plan
+                        Practice pronunciation, fluency, and receive real-time feedback in a supportive environment.
                     </p>
-                </div>
-
-                <div className="flex justify-center gap-6 mb-8">
-                    <AgentAudioVisualizerAura
-                        size="sm"
-                        color="#1FD5F9"
-                        colorShift={0.1}
-                        state={state}
-                        themeMode={systemTheme}
-                        className="aspect-square size-auto md:max-w-lg"
-                    />
                 </div>
 
                 {messages.length > 0 && (
@@ -177,7 +169,7 @@ const ConversationModul = () => {
                             {messages.map((msg, index) => (
                                 <div key={index} className="message-item animate-fadeIn">
                                     <div className="font-semibold text-xs text-muted-foreground mb-1">
-                                        {msg.role === "assistant" ? "CodeFlex AI" : "You"}:
+                                        {msg.role === "assistant" ? "UnMute AI" : "You"}:
                                     </div>
                                     <p className="text-foreground">{msg.content}</p>
                                 </div>
@@ -208,6 +200,17 @@ const ConversationModul = () => {
                                     : "Start Call"}
                         </span>
                     </Button>
+                </div>
+
+                <div className="flex justify-center gap-6 mb-8">
+                    <AgentAudioVisualizerAura
+                        size="sm"
+                        color="#1FD5F9"
+                        colorShift={0.1}
+                        state={state}
+                        themeMode={systemTheme}
+                        className="aspect-square size-auto md:max-w-lg"
+                    />
                 </div>
             </div>
         </div>
